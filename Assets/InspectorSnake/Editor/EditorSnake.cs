@@ -26,6 +26,8 @@ public class EditorSnake : EditorWindow
     private DateTime lastTickTime;
     private TimeSpan timeToLastTickDifference;
 
+    public bool enterHighScoreIsActive;
+
     [MenuItem("Snake/Snake")]
     public static void ShowEditorWindow()
     {

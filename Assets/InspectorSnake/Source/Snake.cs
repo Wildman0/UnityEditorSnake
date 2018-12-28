@@ -5,6 +5,9 @@ using UnityEngine.Analytics;
 
 public class Snake
 {
+    public delegate void EnableScoreEntry(Snake.Direction dir);
+    public static event EnableScoreEntry OnMovementInput;
+
     public List<Vector2Int> snakeBlocksPositions;
     public Vector2Int mapSize = new Vector2Int(20, 20);
     public Vector2Int looseBlock = new Vector2Int(2, 7);
@@ -13,6 +16,8 @@ public class Snake
     public bool movementDisabled;
 
     public Direction movementDirection;
+
+    private HighScore highScore;
 
     public enum Direction
     {
@@ -31,6 +36,8 @@ public class Snake
     //Runs at start
     void Start()
     {
+        highScore = new HighScore();
+
         snakeBlocksPositions = new List<Vector2Int>();
         SetInitialPosition();
     }
@@ -140,6 +147,8 @@ public class Snake
     //Runs when the game ends
     void GameOver()
     {
+        //Show highscore on GUI
+        //if highscore > old highscore, prompt to enter new one
         movementDisabled = true;
     }
 }
