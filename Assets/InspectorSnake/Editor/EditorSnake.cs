@@ -26,7 +26,7 @@ public class EditorSnake : EditorWindow
     private DateTime lastTickTime;
     private TimeSpan timeToLastTickDifference;
 
-    public bool enterHighScoreIsActive;
+    public bool highScoreEntryEnabled;
 
     [MenuItem("Snake/Snake")]
     public static void ShowEditorWindow()
@@ -37,8 +37,7 @@ public class EditorSnake : EditorWindow
     //Runs on editor window destruction
     void OnDestroy()
     {
-        EditorApplication.update -= Update;
-        OnMovementInput -= UpdateMovementDirection;
+        RemoveEventSubscriptions();
     }
     
     //Called on window initialization
@@ -61,6 +60,19 @@ public class EditorSnake : EditorWindow
     {
         EditorApplication.update += Update;
         OnMovementInput += UpdateMovementDirection;
+        Snake.OnEnableScoreEntry += EnableScoreEntry;
+    }
+
+    void RemoveEventSubscriptions()
+    {
+        EditorApplication.update -= Update;
+        OnMovementInput -= UpdateMovementDirection;
+        Snake.OnEnableScoreEntry -= EnableScoreEntry;
+    }
+
+    void EnableScoreEntry()
+    {
+        highScoreEntryEnabled = true;
     }
 
     //Updates the current movement direction
