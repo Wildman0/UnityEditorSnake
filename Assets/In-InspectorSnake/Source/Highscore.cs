@@ -38,7 +38,7 @@ public class HighScore
     //Loads the highscore and name from an XML file
     private HighScoreSerializable Load()
     {
-        var path = Path.Combine(Application.dataPath, "InspectorSnake/highscore");
+        var path = Path.Combine(Application.dataPath, "In-InspectorSnake/highscore.xml");
         using (var stream = new FileStream(path, FileMode.Open))
         {
             var serializer = new XmlSerializer(typeof(HighScoreSerializable));
@@ -49,7 +49,7 @@ public class HighScore
     //Saves the highscore and name to an XML file
     public void Save()
     {
-        var path = Path.Combine(Application.dataPath, "InspectorSnake/highscore");
+        var path = Path.Combine(Application.dataPath, "In-InspectorSnake/highscore.xml");
         
         using (var stream = new FileStream(path, FileMode.Create))
         {
