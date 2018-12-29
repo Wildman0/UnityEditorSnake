@@ -57,4 +57,9 @@ public class HighScore
             serializer.Serialize(stream, serializable);
         }
     }
+
+    public static int GetScore(Snake snake)
+    {
+        return snake.snakeBlocksPositions.Count - 4;
+    }
 }

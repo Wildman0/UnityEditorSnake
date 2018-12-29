@@ -202,7 +202,7 @@ public class EditorSnake : EditorWindow
 
     void DrawHighScore()
     {
-        var scoreText = "Highscore: " + ((snake.snakeBlocksPositions.Count - 4) > snake.highScore.score ? (snake.snakeBlocksPositions.Count - 4) : snake.highScore.score) + "(" + snake.highScore.name + ")";
+        var scoreText = "Highscore: " + (HighScore.GetScore(snake) > snake.highScore.score ? HighScore.GetScore(snake) : snake.highScore.score) + "(" + snake.highScore.name + ")";
 
         GUI.Label(new Rect(295, 220, 200, 30), scoreText);
 
@@ -214,7 +214,7 @@ public class EditorSnake : EditorWindow
             if (Event.current.keyCode == KeyCode.Return && GUI.GetNameOfFocusedControl() == "nameField")
             {
                 snake.highScore.name = nameField;
-                snake.highScore.score = (snake.snakeBlocksPositions.Count - 4);
+                snake.highScore.score = HighScore.GetScore(snake);
                 snake.highScore.Save();
                 highScoreEntryEnabled = false;
             }
@@ -223,7 +223,7 @@ public class EditorSnake : EditorWindow
 
     void DrawCurrentScore()
     {
-        var scoreText = "Score: " + (snake.snakeBlocksPositions.Count - 4);
+        var scoreText = "Score: " + HighScore.GetScore(snake);
         GUI.Label(new Rect(295, 205, 200, 30), scoreText);
     }
 
