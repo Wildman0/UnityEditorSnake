@@ -158,8 +158,9 @@ public class Snake
         movementDisabled = true;
     }
 
+    //Is the snake's score a highscore?
     bool IsHighScore()
     {
-        return snakeBlocksPositions.Count > highScore.score;
+        return HighScore.GetScore(this) > highScore.score;
     }
 }

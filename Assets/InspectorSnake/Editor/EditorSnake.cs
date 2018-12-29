@@ -66,6 +66,7 @@ public class EditorSnake : EditorWindow
         Snake.OnEnableScoreEntry += EnableScoreEntry;
     }
 
+    //Removes all necessary event subscriptions
     void RemoveEventSubscriptions()
     {
         EditorApplication.update -= Update;
@@ -73,6 +74,7 @@ public class EditorSnake : EditorWindow
         Snake.OnEnableScoreEntry -= EnableScoreEntry;
     }
 
+    //Enables a box the player can enter their name in for highscores
     void EnableScoreEntry()
     {
         highScoreEntryEnabled = true;
@@ -106,7 +108,7 @@ public class EditorSnake : EditorWindow
         DrawCurrentScore();
     }
 
-    //Draws start button and gets it's input
+    //Draws start button and gets its input
     void DrawStartButton()
     {
         if (GUI.Button(new Rect(295, 70, 100, 30), "Start Game"))
@@ -115,6 +117,7 @@ public class EditorSnake : EditorWindow
         }
     }
 
+    //Draws the restart button and gets its input
     void DrawRestartButton()
     {
         if (GUI.Button(new Rect(295, 30, 100, 30), "Reset"))
@@ -200,6 +203,7 @@ public class EditorSnake : EditorWindow
         }
     }
 
+    //Draws the high score, the players score if the players score > the highscore
     void DrawHighScore()
     {
         var scoreText = "Highscore: " + (HighScore.GetScore(snake) > snake.highScore.score ? HighScore.GetScore(snake) : snake.highScore.score) + "(" + snake.highScore.name + ")";
@@ -221,6 +225,7 @@ public class EditorSnake : EditorWindow
         }
     }
 
+    //Draws the player's score
     void DrawCurrentScore()
     {
         var scoreText = "Score: " + HighScore.GetScore(snake);
@@ -245,6 +250,7 @@ public class EditorSnake : EditorWindow
         window.Repaint();
     }
 
+    //Reloads the game and resets relevant fields
     void Reload()
     {
         gamePaused = true;

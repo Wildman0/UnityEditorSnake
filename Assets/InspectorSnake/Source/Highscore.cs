@@ -19,12 +19,14 @@ public class HighScore
         Start();
     }
 
+    //Runs at start
     void Start()
     {
         serializable = new HighScoreSerializable();
         SetHighScore();
     }
 
+    //Sets the high score to the current highscore, as defined in the XML file
     public void SetHighScore()
     {
         var highScore = Load();
@@ -33,6 +35,7 @@ public class HighScore
         score = highScore.score;
     }
 
+    //Loads the highscore and name from an XML file
     private HighScoreSerializable Load()
     {
         var path = Path.Combine(Application.dataPath, "InspectorSnake/highscore");
@@ -43,6 +46,7 @@ public class HighScore
         }
     }
 
+    //Saves the highscore and name to an XML file
     public void Save()
     {
         var path = Path.Combine(Application.dataPath, "InspectorSnake/highscore");
@@ -57,7 +61,8 @@ public class HighScore
             serializer.Serialize(stream, serializable);
         }
     }
-
+    
+    //Gets the score of a given snake
     public static int GetScore(Snake snake)
     {
         return snake.snakeBlocksPositions.Count - 4;
