@@ -5,16 +5,25 @@ using System.Xml;
 using System.Xml.Serialization;
 using UnityEngine;
 
-[XmlRoot("HighScore")]
 public class HighScore
 {
-    [XmlElement("Name")]
-    public string name = "";
-
-    [XmlElement("Score")]
-    public int score;
-    
     private XmlDocument scoreSheet;
+
+    public string name;
+    public int score;
+
+    private HighScoreSerializable serializable;
+
+    public HighScore()
+    {
+        Start();
+    }
+
+    void Start()
+    {
+        serializable = new HighScoreSerializable();
+        SetHighScore();
+    }
 
     public void SetHighScore()
     {
@@ -24,25 +33,28 @@ public class HighScore
         score = highScore.score;
     }
 
-    private HighScore Load()
+    private HighScoreSerializable Load()
     {
         var path = Path.Combine(Application.dataPath, "InspectorSnake/highscore");
-
-        var serializer = new XmlSerializer(typeof(HighScore));
         using (var stream = new FileStream(path, FileMode.Open))
         {
-            return (HighScore)serializer.Deserialize(stream);
+            var serializer = new XmlSerializer(typeof(HighScoreSerializable));
+            return (HighScoreSerializable)serializer.Deserialize(stream);
         }
     }
 
     public void Save()
     {
         var path = Path.Combine(Application.dataPath, "InspectorSnake/highscore");
-
-        var serializer = new XmlSerializer(typeof(HighScore));
+        
         using (var stream = new FileStream(path, FileMode.Create))
         {
-            serializer.Serialize(stream, this);
+            var serializer = new XmlSerializer(typeof(HighScoreSerializable));
+
+            serializable.score = score;
+            serializable.name = name;
+
+            serializer.Serialize(stream, serializable);
         }
     }
 }

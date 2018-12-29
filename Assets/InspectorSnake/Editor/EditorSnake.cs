@@ -28,6 +28,8 @@ public class EditorSnake : EditorWindow
 
     public bool highScoreEntryEnabled;
 
+    private string nameField;
+
     [MenuItem("Snake/Snake")]
     public static void ShowEditorWindow()
     {
@@ -98,6 +100,7 @@ public class EditorSnake : EditorWindow
         SetMovementButtonInputs();
         DrawSnakeBlocks(snake.snakeBlocksPositions);
         DrawLooseBlock();
+        DrawHighScore();
     }
 
     //Draws start button and gets it's input
@@ -184,6 +187,34 @@ public class EditorSnake : EditorWindow
         {
             OnMovementInput(Snake.Direction.Left);
         }
+    }
+
+    void DrawHighScore()
+    {
+        //if currentScore > highScore, draw score: currentScore, else draw score: highScore
+
+        //if if end of game, draw high score box/name
+        //Set string to name entry
+        //When an enter button is pressed, save that highscore
+
+        var scoreText = "Highscore: " + (snake.snakeBlocksPositions.Count > snake.highScore.score ? snake.snakeBlocksPositions.Count : snake.highScore.score) + "(" + snake.highScore.name + ")";
+
+        GUI.Label(new Rect(295, 220, 200, 30), scoreText);
+
+        if (highScoreEntryEnabled)
+        {
+            GUI.SetNextControlName("nameField");
+            nameField = GUI.TextField(new Rect(295, 240, 100, 30), nameField);
+
+            if (Event.current.keyCode == KeyCode.Return && GUI.GetNameOfFocusedControl() == "nameField")
+            {
+                snake.highScore.name = nameField;
+                snake.highScore.score = snake.snakeBlocksPositions.Count;
+                snake.highScore.Save();
+                highScoreEntryEnabled = false;
+            }
+        }
+
     }
 
     //Runs every frame (kinda)

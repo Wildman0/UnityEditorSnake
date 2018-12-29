@@ -17,7 +17,7 @@ public class Snake
 
     public Direction movementDirection;
 
-    private HighScore highScore;
+    public HighScore highScore;
 
     public enum Direction
     {
@@ -36,10 +36,10 @@ public class Snake
     //Runs at start
     void Start()
     {
-        highScore = new HighScore();
-
         snakeBlocksPositions = new List<Vector2Int>();
         SetInitialPosition();
+
+        highScore = new HighScore();
     }
 
     //Sets the initial block positions to near the center
@@ -150,8 +150,16 @@ public class Snake
         //Show highscore on GUI
         //if highscore > old highscore, prompt to enter new one
 
-        OnEnableScoreEntry();
+        if (IsHighScore())
+        {
+            OnEnableScoreEntry();
+        }
 
         movementDisabled = true;
+    }
+
+    bool IsHighScore()
+    {
+        return snakeBlocksPositions.Count > highScore.score;
     }
 }
