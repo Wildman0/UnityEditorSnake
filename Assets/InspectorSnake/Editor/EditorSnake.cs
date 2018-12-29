@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Text;
 
 public class EditorSnake : EditorWindow
 {
@@ -96,11 +97,13 @@ public class EditorSnake : EditorWindow
     void OnGUI()
     {
         DrawStartButton();
+        DrawRestartButton();
         DrawBorders();
         SetMovementButtonInputs();
         DrawSnakeBlocks(snake.snakeBlocksPositions);
         DrawLooseBlock();
         DrawHighScore();
+        DrawCurrentScore();
     }
 
     //Draws start button and gets it's input
@@ -109,6 +112,14 @@ public class EditorSnake : EditorWindow
         if (GUI.Button(new Rect(295, 70, 100, 30), "Start Game"))
         {
             gamePaused = false;
+        }
+    }
+
+    void DrawRestartButton()
+    {
+        if (GUI.Button(new Rect(295, 30, 100, 30), "Reset"))
+        {
+            Reload();
         }
     }
 
@@ -191,13 +202,7 @@ public class EditorSnake : EditorWindow
 
     void DrawHighScore()
     {
-        //if currentScore > highScore, draw score: currentScore, else draw score: highScore
-
-        //if if end of game, draw high score box/name
-        //Set string to name entry
-        //When an enter button is pressed, save that highscore
-
-        var scoreText = "Highscore: " + (snake.snakeBlocksPositions.Count > snake.highScore.score ? snake.snakeBlocksPositions.Count : snake.highScore.score) + "(" + snake.highScore.name + ")";
+        var scoreText = "Highscore: " + ((snake.snakeBlocksPositions.Count - 4) > snake.highScore.score ? (snake.snakeBlocksPositions.Count - 4) : snake.highScore.score) + "(" + snake.highScore.name + ")";
 
         GUI.Label(new Rect(295, 220, 200, 30), scoreText);
 
@@ -209,12 +214,17 @@ public class EditorSnake : EditorWindow
             if (Event.current.keyCode == KeyCode.Return && GUI.GetNameOfFocusedControl() == "nameField")
             {
                 snake.highScore.name = nameField;
-                snake.highScore.score = snake.snakeBlocksPositions.Count;
+                snake.highScore.score = (snake.snakeBlocksPositions.Count - 4);
                 snake.highScore.Save();
                 highScoreEntryEnabled = false;
             }
         }
+    }
 
+    void DrawCurrentScore()
+    {
+        var scoreText = "Score: " + (snake.snakeBlocksPositions.Count - 4);
+        GUI.Label(new Rect(295, 205, 200, 30), scoreText);
     }
 
     //Runs every frame (kinda)
@@ -233,5 +243,15 @@ public class EditorSnake : EditorWindow
         snake.Move(snake.movementDirection);
 
         window.Repaint();
+    }
+
+    void Reload()
+    {
+        gamePaused = true;
+        snake.snakeBlocksPositions.Clear();
+        highScoreEntryEnabled = false;
+        snake.SetInitialPosition();
+        snake.looseBlock = new Vector2Int(2, 7);
+        snake.movementDisabled = false;
     }
 }
